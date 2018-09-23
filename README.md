@@ -6,7 +6,7 @@ This repository is for running GWAS in the UKB
 
 
 
-``{R}
+```{R}
 
 library(data.table)
 
