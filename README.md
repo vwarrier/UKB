@@ -3,15 +3,41 @@
 
 ### Step 1: Dowloading files from the UKB
 
+Ensure the key is downloaded in the file and saved as .ukbkey
+
+```bash
+for i in {1..22}; do ./ukbgene imp -c$i; done  #this downloads the BGEN files
+
+for i in {1..22}; do ./ukbgene imp -m -c$i; done
+
+```
+
 
 
 ### Step 2: Converting BGEN to plink files
 
+```bash
+for i in {1..21}; do ./plink2 --bgen ukb_imp_chr${i}_v3.bgen --sample ukb20904_imp_chr${i}_v3_s487334.sample --make-bed -out ukbchr${i} --maf 0.01 --geno 0.05 --threads 10 --hwe 0.000001 --mind 0.05; done
 
-### Step 3: Running GWAS in plink
+```
+
+### Step 3: Creating the required phenotype and covariate files in R
+
+```R
 
 
-### Step 4: Combining the files and producing a reasonable output
+```
+
+### Step 4: Running GWAS in plink
+
+```bash
+{1..21}; do ./plink2 --bfile ukbchr$i --linear --pheno phenotypefile --covar covariatefile --out outfilename$i --threads 20; done
+
+```
+
+
+
+### Step 5: Combining the files and producing a reasonable output
 
 Next, let's combine all the individual chromosome files and produce a single GWAS file, and a variation of that for LDSC.
 ```{R}
