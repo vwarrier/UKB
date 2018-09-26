@@ -181,18 +181,80 @@ rm(list = ls())
 
 ### Step 6: Running GWAS in BOLT-LMM
 
+First lets produce a modelSNPs file
+```R
+library(data.table)
+
+for (i in 2:22){
+  data1 = fread("~/UKB_v2/ukb_mfi_chr1_v3.txt")
+  data2  = fread(paste0("~/UKB_v2/ukb_mfi_chr", i, "_v3.txt"))
+  data1 = rbind(data1, data2)
+  data1 = subset(data1, V6 > 0.05) #keep only SNPs with MAF > 0.2
+  data1 = subset(data1, V8 > 0.99) #keep only SNPs with info > 0.99
+  rm(data2)
+}
+
+```
 
 ```bash
-./bolt --bed=ukbchr{1:22}.bed --bim=ukbchr{1:22}.bim --fam=chr21bolt.fam --phenoFile=headmotionphenobolt.txt --phenoCol=rs_headmotion --covarFile=headmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.34.0.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=20 --statsFile=UKB_rsheadmotionbolt.txt --remove=headmotionremovebolt.txt
+./bolt --bed=ukbchr{1:22}.bed --bim=ukbchr{1:22}.bim --fam=chr21bolt.fam --phenoFile=headmotionphenobolt.txt --phenoCol=rs_headmotion --covarFile=headmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.34.0.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=10 --statsFile=UKB_rsheadmotionbolt.txt --remove=headmotionremovebolt.txt --modelSnps=modelSNPs.txt
+```
 
+
+### Step 8: Let's MTAG this up!
+
+First, read the files in R, and create the necessary files for MTAG
+
+```R
+library(data.table)
+
+taskheadmotion = fread("~/UKB_v2/Plink_files/UKB_taskheadmotionbolt.txt")
+rheadmotion = fread("~/UKB_v2/Plink_files/UKB_rsheadmotionbolt.txt")
+
+setnames(taskheadmotion, 1, "snpid")
+setnames(taskheadmotion, 2, "chr")
+setnames(taskheadmotion, 3, "bpos")
+setnames(taskheadmotion, 5, "a1")
+setnames(taskheadmotion, 6, "a2")
+setnames(taskheadmotion, 7, "freq")
+setnames(taskheadmotion, 11, "pval")
+taskheadmotion$z = taskheadmotion$BETA/taskheadmotion$SE
+taskheadmotion$n = "10000"
+head(taskheadmotion)
+
+taskheadmotionmtag = taskheadmotion[,c("snpid", "chr", "bpos", "a1", "a2", "freq", "z","pval", "n")]
+
+write.table(taskheadmotionmtag, file = "/mnt/b2/home4/arc/vw260/UKB_v1/Plink_files/mtag/mtag/taskheadmotionmtag.txt",
+            row.names =F, col.names = T, quote = F)
+
+
+setnames(rheadmotion, 1, "snpid")
+setnames(rheadmotion, 2, "chr")
+setnames(rheadmotion, 3, "bpos")
+setnames(rheadmotion, 5, "a1")
+setnames(rheadmotion, 6, "a2")
+setnames(rheadmotion, 7, "freq")
+setnames(rheadmotion, 11, "pval")
+rheadmotion$z = rheadmotion$BETA/rheadmotion$SE
+rheadmotion$n = "11000"
+
+rheadmotionmtag = rheadmotion[,c("snpid", "chr", "bpos", "a1", "a2", "freq", "z", "pval", "n")]
+
+write.table(rheadmotionmtag, file = "/mnt/b2/home4/arc/vw260/UKB_v1/Plink_files/mtag/mtag/rheadmotionmtag.txt",
+            row.names =F, col.names = T, quote = F)
+
+```
+
+Next, let's MTAG this
+
+```bash
+ python ~/UKB_v1/Plink_files/mtag/mtag/mtag.py --sumstats ~/UKB_v1/Plink_files/mtag/mtag/rheadmotionmtag.txt,~/UKB_v1/Plink_files/mtag/mtag/taskheadmotionmtag.txt --out ~/UKB_v1/Plink_files/mtag/mtag/rntheadmotionboltmtag --n_min 0.0 --stream_stdout &
+```
+
+### Step 8: Read the files, and upload them onto FUMA to get some functional insights
 
 ```
 
 
-### Step 7: Combining the files and creating manhattan and QQ plots
-
-
-
-### Step 7: Running heritability estimates in BOLT-LMM 
-
+```
 
