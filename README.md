@@ -146,27 +146,27 @@ write.table(headmotioncovar, file = "headmotioncovar.txt", row.names = F, col.na
 Next, let's combine all the individual chromosome files and produce a single GWAS file, and a variation of that for LDSC.
 ```{R}
 
+setwd("/mnt/b2/home4/arc/vw260/UKB_v2/Plink_files/")
 library(data.table)
-
-setwd("/mnt/b2/home4/arc/vw260/UKB_v2/headmotion_rs/")
-data1 = fread("headmotionukb1.PHENO1.glm.linear")
+data1 = fread("tfMRIheadmotionukb1.PHENO1.glm.linear")
 data1 = subset(data1, TEST == "ADD")
 
 for (i in 2:22){
-  a = fread(paste0("headmotionukb", i, ".PHENO1.glm.linear"), header = T)
+  a = fread(paste0("tfMRIheadmotionukb", i, ".PHENO1.glm.linear"), header = T)
   a2 = subset(a, TEST == "ADD")
   data1 = rbind(data1, a2)
 }
 
-save(data1, file = "headmotion_rs_fullGWAS.RData")
+save(data1, file = "headmotion_tfMRI_fullGWAS.RData")
 
 data1 = data1[,c( "ID", "ALT", "REF", "BETA", "SE", "P", "OBS_CT")]
 
+setnames(data1, "ID", "SNP")
 setnames(data1, "ALT", "A1")
 setnames(data1, "REF", "A2")
 setnames(data1, "OBS_CT", "N")
 
-write.table(data1, file = "headmotion_rs_forLDSC.txt", row.names = F, col.names = T, quote = F )
+write.table(data1, file = "headmotion_tfMRI_forLDSC.txt", row.names = F, col.names = T, quote = F )
 
 rm(list = ls())
 
