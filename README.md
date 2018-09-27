@@ -174,7 +174,25 @@ rm(list = ls())
 
 ### Step 5: Running genetic correlations and heritability using LDSC
 
+First,  munge the data in R
+```R
+munge(c("headmotion_tfMRI_forLDSC.txt"), "w_hm3.snplist",trait.names="headmotion_tfMRI", c(9966), info.filter = 0.9, maf.filter = 0.01)
+```
+
+Then run the scripts in LDSC to calculate heritability and gen cor. On the clusters, use Head1
+
 ```bash
+./ldsc.py \
+--h2 ./sumstats/headmotion_tfMRI.sumstats.gz \
+--ref-ld-chr eur_w_ld_chr/ \
+--out ./gencorresults/headmotion_rs \
+--w-ld-chr eur_w_ld_chr/ 
+
+./ldsc.py \
+--ref-ld-chr eur_w_ld_chr/ \
+--out ./gencorresults/headmotion_tfMRI_rg \
+--rg ./sumstats/headmotion_tfMRI.sumstats.gz,./sumstats/headmotion_rs.sumstats.gz,./sumstats/scz3.sumstats,./sumstats/adhd2.sumstats,./sumstats/autsim_ipsych.sumstats,./sumstats/sniekerscognition.sumstats,./sumstats/chronotype.sumstats,./sumstats/anorexia3.sumstats,./sumstats/edu2.sumstats,./sumstats/BPD.sumstats,./sumstats/SWB.sumstats,./sumstats/ICV.sumstats,./sumstats/neuroticism.sumstats,./sumstats/alzheimers.sumstats,./anxietycc.sumstats \
+--w-ld-chr eur_w_ld_chr/ 
 
 ```
 
