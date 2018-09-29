@@ -202,16 +202,25 @@ Then run the scripts in LDSC to calculate heritability and gen cor. On the clust
 First lets produce a modelSNPs file
 ```R
 library(data.table)
+library(dplyr)
+
+data1 = fread("~/UKB_v2/ukb_mfi_chr1_v3.txt")
 
 for (i in 2:22){
-  data1 = fread("~/UKB_v2/ukb_mfi_chr1_v3.txt")
   data2  = fread(paste0("~/UKB_v2/ukb_mfi_chr", i, "_v3.txt"))
   data1 = rbind(data1, data2)
   data1 = subset(data1, V6 > 0.05) #keep only SNPs with MAF > 0.2
-  data1 = subset(data1, V8 > 0.99) #keep only SNPs with info > 0.99
+  data1 = subset(data1, V8 > 0.95) #keep only SNPs with info > 0.99
   rm(data2)
 }
 
+
+data2 = subset(data1, V8 > 0.99)
+data2 = sample_n(data2, 1000000)
+
+data3 = data2[,c("V2")]
+
+write.table(data3, file = "~/UKB_v2/Plink_files/modelSNPs.txt", row.names = F, col.names = T, quote = F)
 ```
 
 ```bash
