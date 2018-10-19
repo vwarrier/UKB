@@ -3,6 +3,8 @@
 
 ### Step 1: Dowloading files from the UKB
 
+First, read this file for downloading UKB files: http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=100314
+
 Ensure the key is downloaded in the file and saved as .ukbkey
 
 ```bash
@@ -10,6 +12,11 @@ for i in {1..22}; do ./ukbgene imp -c$i; done  #this downloads the BGEN files
 
 for i in {1..22}; do ./ukbgene imp -m -c$i; done
 
+./ukbgene imp -cX
+./ukbgene imp -cXY
+
+./ukbgene imp -m -cX
+./ukbgene imp -m -cXY
 ```
 
 
