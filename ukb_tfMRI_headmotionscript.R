@@ -3,7 +3,7 @@ library(data.table)
 library(plyr)
 
 
-bd <- fread("~/UKB_v2/ukb22918.tab", header=TRUE, sep="\t")
+bd <- fread("~/UKB_v2/ukb24196.tab", header=TRUE, sep="\t")
 #bd$f.53.0.0 <- as.Date(bd$f.53.0.0)
 #bd$f.53.1.0 <- as.Date(bd$f.53.1.0)
 #bd$f.53.2.0 <- as.Date(bd$f.53.2.0)
