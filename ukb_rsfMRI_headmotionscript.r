@@ -1,9 +1,11 @@
+## This script now generates files for plink and BOLT for the headmotion statistics in the UK Biobank
+
 # R program ukb22918.tab created 2018-09-17 by ukb2r.cpp Mar 14 2018 14:22:05
 library(data.table)
 library(plyr)
 
 
-bd <- fread("~/UKB_v2/ukb22918.tab", header=TRUE, sep="\t")
+bd <- fread("~/UKB_v2/ukb24196.tab", header=TRUE, sep="\t")
 #bd$f.53.0.0 <- as.Date(bd$f.53.0.0)
 #bd$f.53.1.0 <- as.Date(bd$f.53.1.0)
 #bd$f.53.2.0 <- as.Date(bd$f.53.2.0)
@@ -79,8 +81,6 @@ one = subset(rel2, ID1_freq > 1)
 pheno2 = pheno2[!(pheno2$f.eid %in% one$ID1),]
 two = subset(rel2, ID1_freq < 2)
 pheno2 = pheno2[!(pheno2$f.eid %in% two$ID2),]
-
-
 
 headmotion_pheno = pheno2[,c("f.eid", "f.eid", "f.25741.2.0")]
 headmotioncovar = pheno2[,c("f.eid", "f.eid", "f.22009.0.1",
