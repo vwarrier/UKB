@@ -127,7 +127,19 @@ write.table(data3, file = "~/UKB_v2/Plink_files/modelSNPs.txt", row.names = F, c
 
 We run two BOLT-LMMs, the first only for the autosomes, and the second including the X-chromosome as specified by the authors of BOLT
 ```bash
-./bolt --bed=ukbchr{1:22}.bed --bim=ukbchr{1:22}.bim --fam=chr21bolt.fam --phenoFile=headmotionphenobolt.txt --phenoCol=rs_headmotion --covarFile=headmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.34.0.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=10 --statsFile=UKB_rsheadmotionbolt.txt --remove=headmotionremovebolt.txt --modelSnps=modelSNPs.txt
+##resting state
+./bolt --bed=ukbchr{1:22}.bed --bim=ukbchr{1:22}.bim --fam=chr21bolt.fam --phenoFile=headmotionphenobolt.txt --phenoCol=rs_headmotion --covarFile=headmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.21003.2.0 --covarCol=f.54.2.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=10 --statsFile=UKB_rsheadmotionbolt.txt --remove=headmotionremovebolt.txt --modelSnps=modelSNPs.txt
+
+
+##tfMRI
+./bolt --bed=ukbchr{1:22}.bed --bim=ukbchr{1:22}.bim --fam=chr21bolt.fam --phenoFile=taskheadmotionphenobolt.txt --phenoCol=t_headmotion --covarFile=taskheadmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.21003.2.0 --covarCol=f.54.2.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=20 --statsFile=UKB_taskheadmotionbolt_v2.txt --remove=taskheadmotionremovebolt.txt --modelSnps=modelSNPs.txt
+
+
+
+./bolt --bed=ukbchr{1:22}.bed --bim=ukbchr{1:22}.bim --fam=chr21bolt.fam --phenoFile=headmotionphenobolt.txt --phenoCol=rs_headmotion --covarFile=headmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.21003.2.0 --covarCol=f.54.2.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=10 --statsFile=UKB_rsheadmotionbolt.txt --remove=headmotionremovebolt.txt --modelSnps=modelSNPs.txt
+
+
+
 
 
 ./bolt --bed=ukbchr{1:23}.bed --bim=ukbchr{1:23}.bim --fam=chr21bolt.fam --phenoFile=headmotionphenobolt.txt --phenoCol=rs_headmotion --covarFile=headmotioncovarbolt.txt --covarCol=f.22000.0.0 --covarCol=f.22001.0.0 --qCovarCol=f.22009.0.{1..20} --qCovarCol=f.34.0.0 --covarMaxLevels=200 --lmm --LDscoresFile=LDSCORE.1000G_EUR.tab.gz --geneticMapFile=genetic_map_hg19_withX.txt.gz --lmmForceNonInf --numThreads=10 --statsFile=UKB_rsheadmotionbolt_X.txt --remove=headmotionremovebolt.txt --modelSnps=modelSNPs.txt
